@@ -4,10 +4,11 @@ Classe mère d'une pièce ou d'un pion
 
 class Piece:
     # Attributs de la pièce
-    def _init_(self, name, position, color):
+    def __init__(self, name, position, color):
         self.name = name
         self.position = position
         self.color = color
+        
 
     """
     Procédure move()
@@ -74,3 +75,4 @@ class Piece:
             return 1
         else:
             return 2
+        

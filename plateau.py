@@ -7,14 +7,17 @@ class Plateau:
     SIZE = 8
     
     # Attributs de la pièce
-    def _init_(self):
-        self.grille = np.zeros(self.SIZE, self.SIZE)
+    def __init__(self):
+        self.grille = np.zeros((self.SIZE, self.SIZE))
+        
+    def initialisation(self):
         for X in range(0,self.SIZE-1):
-            self.grille[X][0] = 1
-            self.grille[X][1] = 1
-            self.grille[X][self.SIZE-2] = 2
-            self.grille[X][self.SIZE-1] = 2
-            
+            pass
+            # self.grille[X][0] = 1
+            # self.grille[X][1] = 1
+            # self.grille[X][self.SIZE-2] = 2
+            # self.grille[X][self.SIZE-1] = 2
+       
             
     """
     Fonction is_case_empty()
@@ -36,28 +39,34 @@ class Plateau:
     Output:
         - booleen
     """
-    def try_way(self, ide, initial_case, final_case):
-        boolean = True
+    def try_way_plateau(self, ide, initial_case, final_case):
         Xi = initial_case[0]
         Yi = initial_case[1]
         Xf = final_case[0]
         Yf = final_case[1]
         if Xf - Xi == 0:
-            direction = (Yf-Yi)/abs(Yf-Yi)
-            for Y in range(Yi, Yf, direction):
+            direction = int((Yf-Yi)/abs(Yf-Yi))
+            for Y in range(Yi+direction, Yf, direction):
                 if self.grille[Xf][Y] != 0:
                     return 0
-        elif final_case[1] - initial_case[1] == 0:
-            direction = (Xf-Xi)/abs(Xf-Xi)
-            for X in range(Xi, Xf, direction):
-                if self.grille[X][Yf] != 0:
+            return 1
+        elif Yf - Yi == 0:
+            direction = int((Xf-Xi)/abs(Xf-Xi))
+            for X in range(Xi+direction, Xf, direction):
+                if int(self.grille[X][Yf]) != 0:
                     return 0
+            return 1
         else:
-            directionX = (Xf-Xi)/abs(Xf-Xi)
-            directionY = (Yf-Yi)/abs(Yf-Yi)
-            for X in range(Xi, Xf, direction):
-                if self.grille[X][X*direction] != 0:
-                    return 0
+            directionX = int((Xf-Xi)/abs(Xf-Xi))
+            directionY = int((Yf-Yi)/abs(Yf-Yi))
+            X = Xi + directionX
+            Y = Yi + directionY
+            while X != Xf and self.grille[X][Y] == 0:
+                X += directionX
+                Y += directionY
+            if X == Xf:
+                return 1
+            else:
+                return 0
         
-        return boolean
     

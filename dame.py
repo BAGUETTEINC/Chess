@@ -5,12 +5,13 @@ Classe de la dame
 from piece import Piece
 from jeu import *
 import numpy as np
-import plateau
+from plateau import *
 
 class Dame(Piece):
     # Attributs de la pièce
-    def _init_(self, position, color):
-        super()._init_("Dame", position, color) 
+    def __init__(self, position, color):
+        super().__init__("Dame", position, color)
+        self.image = PhotoImage(file = "C:/Users/ed190/Desktop/Chess/Sprite/bqueen.png")
 
     """
     Procédure move()
@@ -19,8 +20,8 @@ class Dame(Piece):
         -new_position : 2D Vector
     Output: N/A
     """
-    def move(self, new_position):
-        if self.valid(self, new_position):
+    def move(self, new_position, tableau):
+        if self.valid(new_position):
             pass
        
     """
@@ -31,11 +32,11 @@ class Dame(Piece):
     Output:
         -boolean: booleen
     """
-    def valid(self, new_position):
+    def valid(self, new_position, plateau):
         boolean = False
-        if self.case_empty():
-            movement_vector = new_position - self.position
-            if self.valid_movement(movement_vector):
+        movement_vector = new_position - self.position
+        if self.valid_movement(movement_vector):
+            if self.try_way(new_position, plateau):
                 boolean = True
         return boolean
       
@@ -47,9 +48,9 @@ class Dame(Piece):
     Output:
         -boolean: booleen
     """    
-    def try_way(self, case):
+    def try_way(self, case, plateau):
         ide = self.convert()
-        return plateau.is_case_empty(ide, self.position, case)
+        return plateau.try_way_plateau(ide, self.position, case)
     
     """
     Fonction valid_movement()
@@ -60,7 +61,7 @@ class Dame(Piece):
         -boolean: booleen
     """    
     # movement_vector : 2D Vector
-    def valid_movement(movement_vector):
+    def valid_movement(self, movement_vector):
         boolean = False
         if movement_vector[0] == 0 or movement_vector[1] == 0:
             boolean = True
